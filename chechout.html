@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Оформление заказа - NLG store</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; font-family: Arial, Helvetica, sans-serif; padding: 20px; color: white; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { color: #ffd966; text-align: center; margin-bottom: 30px; }
+        .order-summary { background: #1a1a1a; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .order-summary h2 { color: #ffd966; font-size: 1.2rem; margin-bottom: 15px; }
+        .order-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
+        .total { margin-top: 15px; padding-top: 10px; font-size: 1.2rem; font-weight: bold; color: #ffd966; text-align: right; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: none; background: #2a2a2a; color: white; font-size: 1rem; }
+        input:focus, select:focus, textarea:focus { outline: 2px solid #ffd966; }
+        .payment-details { background: #1a1a1a; border-radius: 16px; padding: 20px; margin: 20px 0; text-align: center; }
+        .payment-details h3 { color: #ffd966; margin-bottom: 15px; }
+        .payment-card { background: #2a2a2a; padding: 15px; border-radius: 12px; margin: 10px 0; }
+        .payment-card p { margin: 5px 0; }
+        .copy-btn { background: #ffd966; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .submit-btn { background: #4caf50; color: white; border: none; padding: 15px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .submit-btn:active { transform: scale(0.98); }
+        .back-btn { background: #666; color: white; border: none; padding: 12px 24px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; }
+        .error { color: #ff6666; font-size: 0.8rem; margin-top: 5px; }
+        .success { background: #4caf50; padding: 15px; border-radius: 12px; text-align: center; margin-top: 20px; }
+        hr { border-color: #333; margin: 20px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Оформление заказа</h1>
+    
+    <div class="order-summary" id="orderSummary">
+        <h2>🛒 Ваш заказ</h2>
+        <div id="orderItems"></div>
+        <div class="total" id="orderTotal"></div>
+    </div>
+    
+    <form id="orderForm">
+        <div class="form-group"><label>📱 Ваше имя *</label><input type="text" id="fullName" required placeholder="Иван Иванов"></div>
+        <div class="form-group"><label>📞 Телефон *</label><input type="tel" id="phone" required placeholder="+7 (999) 123-45-67"></div>
+        <div class="form-group"><label>💬 Комментарий к заказу</label><textarea id="comment" rows="3" placeholder="Дополнительная информация..."></textarea></div>
+    </form>
+    
+    <div class="payment-details" id="paymentDetails">
+        <h3>💰 Реквизиты для оплаты</h3>
+        <div class="payment-card"><p><strong>СБП</strong></p><p>📱 Номер: <strong>+7 (999) 123-45-67</strong></p><button class="copy-btn" onclick="copyToClipboard('+79991234567')">📋 Скопировать</button></div>
+        <div class="payment-card"><p><strong>Банковская карта</strong></p><p>💳 Карта: <strong>1234 5678 9012 3456</strong></p><button class="copy-btn" onclick="copyToClipboard('1234567890123456')">📋 Скопировать</button></div>
+        <div class="payment-card"><p><strong>Наш ТГК</strong></p><p>🔗 <strong>https://t.me/NLGsstore</strong></p><button class="copy-btn" onclick="copyToClipboard('https://t.me/NLGsstore')">📋 Скопировать</button></div>
+
+    </div>
+    
+    <button class="submit-btn" id="submitOrderBtn">✅ Отправить заказ</button>
+    <button class="back-btn" onclick="window.location.href='index.html'">← Вернуться в магазин</button>
+    <div id="message"></div>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    function displayOrder() {
+        const orderItemsDiv = document.getElementById('orderItems');
+        const orderTotalDiv = document.getElementById('orderTotal');
+        if (cart.length === 0) {
+            orderItemsDiv.innerHTML = '<p style="color: #aaa;">Корзина пуста. Вернитесь в магазин.</p>';
+            orderTotalDiv.innerHTML = 'Итого: 0 ₽';
+            return;
+        }
+        let html = '', total = 0;
+        cart.forEach(item => { total += item.price; html += `<div class="order-item"><span>${item.title}</span><span>${item.price} ₽</span></div>`; });
+        orderItemsDiv.innerHTML = html;
+        orderTotalDiv.innerHTML = `Итого к оплате: ${total} ₽`;
+    }
+    
+    async function sendOrder() {
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const comment = document.getElementById('comment').value;
+        
+        if (!fullName || !phone || !address) {
+            alert('Пожалуйста, заполните имя, телефон и адрес доставки!');
+            return false;
+        }
+        if (cart.length === 0) {
+            alert('Корзина пуста!');
+            window.location.href = 'index.html';
+            return false;
+        }
+        
+        let total = 0;
+        cart.forEach(item => total += item.price);
+        const sessionToken = localStorage.getItem('session_token');
+        const orderData = { customer_name: fullName, phone, email, address, comment, items: cart, total };
+        
+        // Сохраняем локально (демо) — всегда успешно, чтобы не было ошибки
+        const orders = JSON.parse(localStorage.getItem('orders_history') || '[]');
+        const newOrder = { ...orderData, order_number: 'ORD-' + Date.now(), created_at: new Date().toISOString() };
+        orders.push(newOrder);
+        localStorage.setItem('orders_history', JSON.stringify(orders));
+        
+        const messageDiv = document.getElementById('message');
+        messageDiv.innerHTML = `
+            <div class="success">
+                <h3>✅ Заказ принят!</h3>
+                <p>Номер заказа: <strong>${newOrder.order_number}</strong></p>
+                <p>Сумма к оплате: <strong>${total} ₽</strong></p>
+                <hr><p>📌 <strong>Как оплатить:</strong> переведите сумму по реквизитам ниже</p>
+                <button class="copy-btn" onclick="copyToClipboard('+79991234567')">📋 Скопировать номер</button><br><br>
+                <button class="submit-btn" onclick="window.location.href='index.html'">🏠 На главную</button>
+                ${sessionToken ? '<button class="submit-btn" onclick="window.location.href=\'dashboard.html\'" style="margin-top:10px; background:#ffd966;">📦 Мои заказы</button>' : ''}
+            </div>
+        `;
+        localStorage.setItem('cart', '[]');
+        cart = [];
+        document.getElementById('orderForm').style.display = 'none';
+        document.getElementById('paymentDetails').style.display = 'none';
+        document.querySelector('.submit-btn').style.display = 'none';
+        return false;
+    }
+    
+    function copyToClipboard(text) { navigator.clipboard.writeText(text); alert('Скопировано: ' + text); }
+    
+    displayOrder();
+    document.getElementById('submitOrderBtn').addEventListener('click', sendOrder);
+</script>
+</body>
+</html>

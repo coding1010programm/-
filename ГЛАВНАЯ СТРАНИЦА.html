@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NLG || store</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; font-family: Arial, Helvetica, sans-serif; }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 12px 20px;
+            background: transparent;
+            backdrop-filter: none;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+        }
+        .burger { width: 30px; height: 24px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; z-index: 101; }
+        .burger span { display: block; width: 100%; height: 2.5px; background: white; border-radius: 3px; }
+        .toc-title { 
+            font-size: 1.4rem; 
+            font-weight: bold; 
+            color: white; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+            letter-spacing: 1px; 
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .auth-btn { background: #2c7da0; border: none; padding: 6px 14px; border-radius: 30px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: 0.2s; color: white; text-decoration: none; display: inline-block; }
+        .auth-btn:hover { background: #1f5e7a; transform: scale(0.96); }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-name { color: #2c7da0; font-size: 0.85rem; font-weight: bold; }
+        .logout-link { color: #ff6666; font-size: 0.75rem; cursor: pointer; text-decoration: underline; }
+
+        .cart-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #2c7da0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: none;
+        }
+        .cart-button:active { transform: scale(0.92); }
+        .cart-button span { font-size: 28px; color: white; }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100%;
+            background: rgba(20,20,30,0.98);
+            backdrop-filter: blur(15px);
+            z-index: 1001;
+            transition: right 0.3s;
+            padding: 80px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        .cart-sidebar.open { right: 0; }
+        .cart-sidebar h3 { color: #2c7da0; margin-bottom: 20px; text-align: center; }
+        .cart-items { flex: 1; overflow-y: auto; }
+        .cart-item { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 10px; }
+        .cart-item-info { flex: 1; }
+        .cart-item-title { font-size: 0.8rem; font-weight: bold; }
+        .cart-item-price { font-size: 0.75rem; color: #2c7da0; }
+        .remove-item { background: none; border: none; color: #ff6666; cursor: pointer; font-size: 1rem; }
+        .cart-total { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center; font-weight: bold; }
+        .checkout-btn { background: #2c7da0; color: white; border: none; padding: 12px; border-radius: 30px; margin-top: 15px; font-weight: bold; cursor: pointer; }
+        .close-cart { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.25s; }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(12px);
+            z-index: 200;
+            transition: left 0.35s;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; padding: 15px 25px; color: #eee; text-decoration: none; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .side-menu a:hover { background: rgba(44,125,160,0.15); color: #2c7da0; padding-left: 32px; }
+        .menu-text { margin-top: auto; padding: 20px 25px; color: rgba(255,255,255,0.5); font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 150; opacity: 0; visibility: hidden; transition: 0.25s; }
+        .overlay.active { opacity: 1; visibility: visible; }
+
+        .gallery-container { width: 100%; overflow-x: auto; white-space: nowrap; margin-top: 70px; padding: 10px 0; scrollbar-width: thin; }
+        .gallery-container::-webkit-scrollbar { height: 4px; }
+        .gallery-container::-webkit-scrollbar-track { background: #2a2a2a; border-radius: 10px; }
+        .gallery-container::-webkit-scrollbar-thumb { background: #2c7da0; border-radius: 10px; }
+        .slide { display: inline-block; width: 85%; max-width: 350px; margin: 10px; vertical-align: top; }
+        .image-wrapper { position: relative; width: 100%; border-radius: 20px; overflow: hidden; background: #2a2a2a; }
+        .image-wrapper img { width: 100%; height: auto; display: block; }
+        
+        .catalog { padding: 20px 16px 50px; }
+        .section-title { font-size: 1.8rem; font-weight: bold; color: #2c7da0; margin-bottom: 20px; border-left: 5px solid #2c7da0; padding-left: 15px; }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .category-card {
+            background: linear-gradient(135deg, #1e1e2e, #16162a);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(44,125,160,0.2);
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: #2c7da0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .category-card:active { transform: scale(0.97); }
+        .category-icon { font-size: 3.5rem; margin-bottom: 12px; }
+        .category-name { color: white; font-weight: bold; font-size: 1.1rem; }
+        
+        .product-card {
+            background: linear-gradient(135deg, #1e1e2e, #16162a);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(44,125,160,0.2);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #2c7da0;
+        }
+        .product-card .image-wrapper { aspect-ratio: 1; border-radius: 14px; margin-bottom: 12px; }
+        .product-card .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .product-name { color: white; font-weight: bold; margin: 10px 0; font-size: 0.95rem; }
+        .product-price { color: #2c7da0; font-size: 1.2rem; margin-bottom: 12px; font-weight: bold; }
+        .add-to-cart-btn { background: #2c7da0; border: none; padding: 10px 18px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.2s; color: white; }
+        .add-to-cart-btn:active { transform: scale(0.95); }
+        .back-btn { background: #2c7da0; border: none; font-size: 1.5rem; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; color: white; }
+        
+        /* ИНСТРУКЦИЯ ПО ЗАКАЗУ */
+        .order-steps {
+            background: linear-gradient(135deg, #12121c, #0c0c14);
+            border-radius: 32px;
+            margin: 20px 16px 30px;
+            padding: 28px 20px;
+            border: 1px solid rgba(44,125,160,0.25);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        .steps-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c7da0;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .steps-title span { font-size: 2rem; }
+        .steps-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .step-card {
+            background: rgba(30,30,46,0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 20px 16px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            transition: all 0.25s;
+            border: 1px solid rgba(44,125,160,0.15);
+        }
+        .step-card:hover { transform: translateY(-5px); border-color: #2c7da0; background: rgba(40,40,58,0.8); }
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: #2c7da0;
+            color: white;
+            font-size: 1.7rem;
+            font-weight: bold;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+        }
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .step-desc {
+            font-size: 0.8rem;
+            color: #ccccdd;
+            line-height: 1.4;
+        }
+        .bot-contact {
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(44,125,160,0.1);
+            padding: 14px;
+            border-radius: 60px;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .bot-contact span { color: #2c7da0; font-weight: bold; font-size: 0.9rem; }
+        
+        footer { text-align: center; padding: 25px; color: #666; font-size: 0.7rem; border-top: 1px solid #222; margin-top: 20px; }
+        
+        .contacts-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+        .contacts-modal.active { opacity: 1; visibility: visible; }
+        .contacts-card {
+            background: linear-gradient(145deg, #1f1f2e, #14141e);
+            width: 90%;
+            max-width: 450px;
+            border-radius: 32px;
+            padding: 30px 25px 35px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            color: white;
+        }
+        .contacts-modal.active .contacts-card { transform: scale(1); }
+        .contacts-card h2 { font-size: 2rem; color: #2c7da0; margin-bottom: 10px; }
+        .contact-detail {
+            background: rgba(255,255,255,0.05);
+            border-radius: 70px;
+            padding: 12px 20px;
+            margin: 18px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(44,125,160,0.2);
+        }
+        .contact-icon { font-size: 28px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .contact-info { text-align: left; flex: 1; }
+        .contact-label { font-size: 0.7rem; color: #2c7da0; text-transform: uppercase; }
+        .close-contacts { background: #2c7da0; border: none; font-weight: bold; margin-top: 25px; padding: 12px; width: 100%; border-radius: 60px; cursor: pointer; color: white; }
+        
+        .admin-panel-section {
+            background: linear-gradient(135deg, #0a1628, #071120);
+            margin: 20px 16px;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #4a90e2;
+        }
+        .admin-toggle-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .admin-content { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #4a90e2; }
+        .admin-content.visible { display: block; }
+        .admin-product-row { background: rgba(74,144,226,0.1); padding: 12px; margin: 10px 0; border-radius: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .admin-product-row input { flex: 1; padding: 8px; border-radius: 8px; border: none; background: #1a1a2e; color: white; }
+        .admin-save-btn, .admin-add-btn { background: #2c7da0; color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; margin: 5px; }
+        .admin-delete-btn { background: #ff4444; color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
+        .sync-notice { position: fixed; bottom: 90px; left: 20px; background: #2e7d32; color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100; }
+        .sync-notice.show { opacity: 1; }
+        
+        @media (max-width: 580px) {
+            .step-card { min-width: 130px; }
+            .steps-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
+    <div class="toc-title">NLG || STORE</div>
+    <div id="authWidget" class="user-info">
+        <a href="register.html" class="auth-btn" id="loginBtn"> Войти</a>
+    </div>
+</div>
+
+<div class="side-menu" id="sideMenu">
+    <a href="#" id="homeLink">🏠 Главная</a>
+    <a href="#" id="catalogLink">📦 Каталог</a>
+    <a href="#" id="contactsMenuLink">📞 Контакты</a>
+    <div class="menu-text"><p>✨ NLG || store</p><p>⚡ Товары высокого качества</p><small>© 2026</small></div>
+</div>
+<div class="overlay" id="overlayMenu"></div>
+
+<div id="mainContent"></div>
+
+<!-- БЛОК ИНСТРУКЦИИ (будет вставлен в mainContent либо отдельно, но размещаем после основного контента) -->
+<div id="orderInstructionsContainer" style="display: block;"></div>
+
+<div id="adminPanelContainer" style="display:none;"></div>
+
+<footer>NLG store — онлайн магазин качественного товара | Быстрая доставка по РФ</footer>
+
+<button class="cart-button" id="cartBtn"><span>🛒</span></button>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+    <button class="close-cart" id="closeCartBtn">✕</button>
+    <h3>🛍️ Корзина</h3>
+    <div class="cart-items" id="cartItems"><div style="text-align:center;color:#aaa;">Корзина пуста</div></div>
+    <div class="cart-total" id="cartTotal">Итого: 0 ₽</div>
+    <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+</div>
+
+<div id="contactsModal" class="contacts-modal">
+    <div class="contacts-card">
+        <h2>📞 Связь с нами</h2>
+        <div class="contact-detail"><div class="contact-icon">📱</div><div class="contact-info"><div class="contact-label">Telegram</div><div class="contact-value">@NLG_manager</div></div></div>
+        <div class="contact-detail"><div class="contact-icon">✉️</div><div class="contact-info"><div class="contact-label">Telegram канал</div><div class="contact-value">NLGsstore</div></div></div>
+        <button class="close-contacts" id="closeContactsBtn">Закрыть</button>
+    </div>
+</div>
+
+<div class="sync-notice" id="syncNotice">✅ Сохранено</div>
+
+<script>
+    // ТОВАРЫ ПО УМОЛЧАНИЮ
+    let productsData = {
+        "Футболки": [
+            { name: "Футболка Nike Black", price: 1990, img: "https://picsum.photos/id/101/200" },
+            { name: "Футболка Adidas White", price: 1890, img: "https://picsum.photos/id/104/200" }
+        ],
+        "Лонгсливы": [{ name: "Лонгслив Nike Gray", price: 2290, img: "https://picsum.photos/id/20/200" }],
+        "Худи": [{ name: "Худи Nike", price: 3990, img: "https://picsum.photos/id/32/200" }],
+        "Обувь": [{ name: "Кроссовки Nike Air", price: 4990, img: "https://picsum.photos/id/43/200" }],
+        "Аксессуары": [{ name: "Шапка Beanie", price: 990, img: "https://picsum.photos/id/46/200" }],
+        "Кофты": [{ name: "Кофта уютная", price: 999, img: "https://picsum.photos/id/46/200" }],
+        
+    };
+    
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let currentUser = JSON.parse(localStorage.getItem('nlg_user') || 'null');
+    
+    // ЗАГРУЗКА ТОВАРОВ
+    function loadProducts() {
+        const saved = localStorage.getItem('nlg_store_products');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Object.keys(parsed).length > 0) productsData = parsed;
+            } catch(e) {}
+        }
+    }
+    
+    function saveProducts() {
+        localStorage.setItem('nlg_store_products', JSON.stringify(productsData));
+        showNotice('✅ Товары сохранены');
+        if (currentUser && currentUser.username === 'admin') renderAdminPanel();
+        showMainPage();
+        renderOrderInstructions(); // перерисовываем инструкцию при изменении
+    }
+    
+    function showNotice(msg) {
+        const notice = document.getElementById('syncNotice');
+        notice.textContent = msg;
+        notice.classList.add('show');
+        setTimeout(() => notice.classList.remove('show'), 2000);
+    }
+    
+    function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
+    
+    function addToCart(title, price, img) { cart.push({ title, price, img }); saveCart(); showNotice(`✅ ${title} в корзине`); }
+    
+    function updateCartDisplay() {
+        const container = document.getElementById('cartItems');
+        const totalSpan = document.getElementById('cartTotal');
+        if (cart.length === 0) {
+            container.innerHTML = '<div style="text-align:center;color:#aaa;">Корзина пуста</div>';
+            totalSpan.innerHTML = 'Итого: 0 ₽';
+            return;
+        }
+        let html = '', total = 0;
+        cart.forEach((item, i) => {
+            total += item.price;
+            html += `<div class="cart-item"><img src="${item.img}"><div class="cart-item-info"><div class="cart-item-title">${item.title}</div><div class="cart-item-price">${item.price} ₽</div></div><button class="remove-item" data-index="${i}">🗑️</button></div>`;
+        });
+        container.innerHTML = html;
+        totalSpan.innerHTML = `Итого: ${total} ₽`;
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.onclick = () => { cart.splice(parseInt(btn.dataset.index), 1); saveCart(); };
+        });
+    }
+    
+    // ОТРИСОВКА ИНСТРУКЦИИ ПО ЗАКАЗУ
+    function renderOrderInstructions() {
+        const container = document.getElementById('orderInstructionsContainer');
+        if (!container) return;
+        // Наполняем понятными шагами: выбор -> оформление -> заказ в бота -> проверка/отправка -> получение
+        container.innerHTML = `
+            <div class="order-steps">
+                <div class="steps-title">
+                    <span>📋</span> Как заказать и получить товар <span>🚀</span>
+                </div>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-title">🛍️ Выбор товара</div>
+                        <div class="step-desc">Добавьте понравившиеся вещи в корзину через кнопку "В корзину". Можно перебирать категории и товары.</div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-title">📝 Оформление заказа</div>
+                        <div class="step-desc">Нажмите на иконку корзины 🛒, проверьте позиции и нажмите «Оформить заказ». Заполните контактные данные.</div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-title">🤖 Заказ в бота продавцу</div>
+                        <div class="step-desc">После оформления заказ автоматически отправляется в Telegram-бот продавца. Менеджер получит уведомление.</div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-title">✅ Проверка и отправка</div>
+                        <div class="step-desc">Продавец связывается с вами для подтверждения, уточняет детали, после чего отправляет заказ удобной службой.</div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <div class="step-title">📦 Получение</div>
+                        <div class="step-desc">Отслеживайте трек-номер, получайте посылку и наслаждайтесь покупкой! При необходимости — поддержка 24/7.</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div class="bot-contact">
+                        <span>📲 По вопросам заказа: Telegram @NLG_manager | канал @NLGsstore</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // ОТОБРАЖЕНИЕ СТРАНИЦ с инструкцией снизу
+    function showMainPage() {
+        let catsHtml = '<div class="categories-grid">';
+        for (let cat in productsData) {
+            catsHtml += `<div class="category-card" onclick="showCategoryPage('${cat.replace(/'/g, "\\'")}')"><div class="category-icon">📦</div><div class="category-name">${cat}</div></div>`;
+        }
+        catsHtml += '</div>';
+        
+        document.getElementById('mainContent').innerHTML = `
+            <div class="gallery-container">
+                <div class="slide"><div class="image-wrapper"><img src="https://picsum.photos/id/101/600/400"></div></div>
+                <div class="slide"><div class="image-wrapper"><img src="https://picsum.photos/id/104/600/400"></div></div>
+                <div class="slide"><div class="image-wrapper"><img src="https://picsum.photos/id/106/600/400"></div></div>
+            </div>
+            <div class="catalog">
+                <div class="section-title">🔎 Категории</div>
+                ${catsHtml}
+            </div>
+        `;
+        // Инструкция остаётся отдельно в контейнере снизу
+        renderOrderInstructions();
+        window.scrollTo(0, 0);
+    }
+    
+    window.showCategoryPage = function(categoryName) {
+        const products = productsData[categoryName];
+        if (!products || products.length === 0) {
+            document.getElementById('mainContent').innerHTML = `<div style="padding:20px;margin-top:70px;"><button class="back-btn" onclick="showMainPage()">←</button><div style="margin:20px;text-align:center;">📭 В этой категории пока нет товаров</div></div>`;
+            renderOrderInstructions();
+            return;
+        }
+        let productsHtml = '<div class="categories-grid">';
+        products.forEach(p => {
+            productsHtml += `<div class="product-card"><div class="image-wrapper"><img src="${p.img}" onerror="this.src='https://picsum.photos/id/1/200'"></div><div class="product-name">${p.name}</div><div class="product-price">${p.price} ₽</div><button class="add-to-cart-btn" onclick="addToCart('${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.img}')">🛒 В корзину</button></div>`;
+        });
+        productsHtml += '</div>';
+        document.getElementById('mainContent').innerHTML = `<div style="padding:20px;margin-top:70px;"><button class="back-btn" onclick="showMainPage()">←</button><div class="section-title" style="margin:15px 0 20px 0;">${categoryName}</div>${productsHtml}</div>`;
+        renderOrderInstructions();
+    };
+    
+    // АДМИН-ПАНЕЛЬ (только для admin)
+    function renderAdminPanel() {
+        const container = document.getElementById('adminPanelContainer');
+        if (!container) return;
+        
+        let html = `<div class="admin-panel-section"><button class="admin-toggle-btn" id="toggleAdminBtn">🔧 АДМИН-ПАНЕЛЬ</button><div id="adminContent" class="admin-content"><button class="admin-add-btn" onclick="addNewCategory()">+ Добавить категорию</button>`;
+        
+        for (let cat in productsData) {
+            html += `<div style="margin:15px 0;padding:15px;background:rgba(74,144,226,0.1);border-radius:15px;"><h3 style="color:#4a90e2;">📁 ${cat}</h3><button class="admin-add-btn" onclick="addProductToCategory('${cat.replace(/'/g, "\\'")}')">+ Товар</button><button class="admin-delete-btn" onclick="deleteCategory('${cat.replace(/'/g, "\\'")}')">Удалить категорию</button>`;
+            if (productsData[cat] && productsData[cat].length) {
+                productsData[cat].forEach((p, idx) => {
+                    html += `<div class="admin-product-row"><input type="text" id="name_${cat}_${idx}" value="${p.name.replace(/'/g, "&#39;")}" placeholder="Название"><input type="number" id="price_${cat}_${idx}" value="${p.price}" placeholder="Цена" style="width:100px"><input type="text" id="img_${cat}_${idx}" value="${p.img}" placeholder="URL"><button class="admin-delete-btn" onclick="deleteProduct('${cat.replace(/'/g, "\\'")}', ${idx})">🗑️</button></div>`;
+                });
+            } else {
+                html += `<div style="padding:20px;color:#aaa;">Нет товаров</div>`;
+            }
+            html += `</div>`;
+        }
+        
+        html += `<button class="admin-save-btn" onclick="saveAllAdmin()">💾 СОХРАНИТЬ ВСЕ</button></div></div>`;
+        container.innerHTML = html;
+        
+        const toggleBtn = document.getElementById('toggleAdminBtn');
+        const adminContent = document.getElementById('adminContent');
+        if (toggleBtn) toggleBtn.onclick = () => adminContent.classList.toggle('visible');
+    }
+    
+    function collectAdminData() {
+        for (let cat in productsData) {
+            if (productsData[cat]) {
+                for (let idx = 0; idx < productsData[cat].length; idx++) {
+                    const nameInp = document.getElementById(`name_${cat}_${idx}`);
+                    const priceInp = document.getElementById(`price_${cat}_${idx}`);
+                    const imgInp = document.getElementById(`img_${cat}_${idx}`);
+                    if (nameInp) productsData[cat][idx].name = nameInp.value;
+                    if (priceInp) productsData[cat][idx].price = parseInt(priceInp.value) || 0;
+                    if (imgInp) productsData[cat][idx].img = imgInp.value;
+                }
+            }
+        }
+    }
+    
+    window.saveAllAdmin = function() {
+        collectAdminData();
+        saveProducts();
+        showMainPage();
+        showNotice('✅ Все сохранено!');
+    };
+    
+    window.addProductToCategory = function(cat) {
+        if (productsData[cat]) {
+            productsData[cat].push({ name: 'Новый товар', price: 1000, img: 'https://picsum.photos/id/1/200' });
+            saveProducts();
+        }
+    };
+    
+    window.deleteProduct = function(cat, idx) {
+        if (productsData[cat]) {
+            productsData[cat].splice(idx, 1);
+            if (productsData[cat].length === 0) delete productsData[cat];
+            saveProducts();
+        }
+    };
+    
+    window.deleteCategory = function(cat) {
+        if (confirm(`Удалить категорию "${cat}"?`)) {
+            delete productsData[cat];
+            saveProducts();
+        }
+    };
+    
+    window.addNewCategory = function() {
+        const name = prompt('Название категории:');
+        if (name && name.trim() && !productsData[name.trim()]) {
+            productsData[name.trim()] = [];
+            saveProducts();
+        }
+    };
+    
+    // АВТОРИЗАЦИЯ
+    function updateAuthWidget() {
+        const widget = document.getElementById('authWidget');
+        const adminContainer = document.getElementById('adminPanelContainer');
+        
+        if (currentUser && currentUser.username === 'admin') {
+            widget.innerHTML = `<span class="user-name">👑 ${currentUser.username}</span><span class="logout-link" id="logoutBtn">[выйти]</span>`;
+            adminContainer.style.display = 'block';
+            renderAdminPanel();
+            document.getElementById('logoutBtn')?.addEventListener('click', () => {
+                localStorage.removeItem('nlg_user');
+                currentUser = null;
+                adminContainer.style.display = 'none';
+                updateAuthWidget();
+                showNotice('👋 Вы вышли');
+                showMainPage();
+            });
+        } else if (currentUser) {
+            widget.innerHTML = `<span class="user-name">👤 ${currentUser.username}</span><span class="logout-link" id="logoutBtn">[выйти]</span>`;
+            adminContainer.style.display = 'none';
+            document.getElementById('logoutBtn')?.addEventListener('click', () => {
+                localStorage.removeItem('nlg_user');
+                currentUser = null;
+                updateAuthWidget();
+                showNotice('👋 Вы вышли');
+                showMainPage();
+            });
+        } else {
+            widget.innerHTML = `<a href="register.html" class="auth-btn">👤 Войти</a>`;
+            adminContainer.style.display = 'none';
+        }
+    }
+    
+    // МЕНЮ И КОРЗИНА
+    function initMenu() {
+        const burger = document.getElementById('burgerBtn');
+        const menu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlayMenu');
+        burger.onclick = () => { menu.classList.add('open'); overlay.classList.add('active'); };
+        overlay.onclick = () => { menu.classList.remove('open'); overlay.classList.remove('active'); };
+        document.getElementById('homeLink').onclick = (e) => { e.preventDefault(); showMainPage(); menu.classList.remove('open'); overlay.classList.remove('active'); };
+        document.getElementById('catalogLink').onclick = (e) => { e.preventDefault(); showMainPage(); menu.classList.remove('open'); overlay.classList.remove('active'); };
+        
+        const cartBtn = document.getElementById('cartBtn');
+        const cartSide = document.getElementById('cartSidebar');
+        const cartOver = document.getElementById('cartOverlay');
+        const closeCart = document.getElementById('closeCartBtn');
+        cartBtn.onclick = () => { cartSide.classList.add('open'); cartOver.classList.add('active'); };
+        closeCart.onclick = () => { cartSide.classList.remove('open'); cartOver.classList.remove('active'); };
+        cartOver.onclick = () => { cartSide.classList.remove('open'); cartOver.classList.remove('active'); };
+        
+        document.getElementById('checkoutBtn').onclick = () => {
+            if (cart.length === 0) alert('Корзина пуста');
+            else {
+                alert('📦 Заказ передан продавцу в Telegram! Ожидайте подтверждение в личных сообщениях');
+                window.location.href = 'chechout.html';
+            }
+        };
+        
+        const contactsModal = document.getElementById('contactsModal');
+        const closeContacts = document.getElementById('closeContactsBtn');
+        document.getElementById('contactsMenuLink').onclick = (e) => {
+            e.preventDefault();
+            menu.classList.remove('open');
+            overlay.classList.remove('active');
+            contactsModal.classList.add('active');
+        };
+        closeContacts.onclick = () => contactsModal.classList.remove('active');
+        contactsModal.onclick = (e) => { if(e.target === contactsModal) contactsModal.classList.remove('active'); };
+    }
+    
+    // ЗАПУСК
+    loadProducts();
+    updateCartDisplay();
+    showMainPage();
+    initMenu();
+    updateAuthWidget();
+    renderOrderInstructions(); // на старте тоже
+    window.addToCart = addToCart;
+    window.showMainPage = showMainPage;
+</script>
+</body>
+</html>
