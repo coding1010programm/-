@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>NLG || store</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <header class="header">
+        <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
+        <div class="logo">NLG_Store<span>.</span></div>
+        <nav class="nav-links">
+            <a href="#" id="homeLink">HOME</a>
+            <a href="#" id="catalogLink">SHOP</a>
+            <a href="#" id="contactsMenuLink">CONTACT</a>
+        </nav>
+        <div id="authWidget" class="user-info"></div>
+    </header>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="#" id="homeLinkMobile">🏠 HOME</a>
+        <a href="#" id="catalogLinkMobile">📦 SHOP</a>
+        <a href="#" id="contactsMenuLinkMobile">📞 CONTACT</a>
+        <div class="menu-text">
+            <p>✨ NLG || store</p>
+            <p>⚡ Товары высокого качества</p>
+            <small>© 2026</small>
+        </div>
+    </nav>
+    <div class="overlay" id="overlayMenu"></div>
+
+    <main id="mainContent"></main>
+
+    <div id="orderInstructionsContainer" style="display: block;"></div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>NLG<span>.</span></h4>
+                <p>Thrifted culture. Curated style. Pieces with a past, made for the present.</p>
+            </div>
+            <div class="footer-col">
+                <h4>SHOP</h4>
+                <a href="#" id="footerCatalog">All Products</a>
+                <a href="#">Hoodies</a>
+                <a href="#">T-Shirts</a>
+                <a href="#">Accessories</a>
+            </div>
+            <div class="footer-col">
+                <h4>HELP</h4>
+                <a href="#" id="footerContacts">Contact Us</a>
+                <a href="#">Shipping</a>
+                <a href="#">Returns</a>
+                <a href="#">Size Guide</a>
+            </div>
+            <div class="footer-col">
+                <h4>FOLLOW</h4>
+                <a href="https://t.me/NLG_manager" target="_blank">Telegram</a>
+                <a href="https://t.me/NLGsstore" target="_blank">Channel</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 NLG. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <div id="contactsModal" class="contacts-modal">
+        <div class="contacts-card">
+            <button class="close-contacts" id="closeContactsBtn">✕</button>
+            <h2>CONTACT US</h2>
+            <div class="contact-detail">
+                <div class="contact-icon">📱</div>
+                <div class="contact-info">
+                    <div class="contact-label">Telegram</div>
+                    <div class="contact-value">@NLG_manager</div>
+                </div>
+            </div>
+            <div class="contact-detail">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-info">
+                    <div class="contact-label">Channel</div>
+                    <div class="contact-value">@NLGsstore</div>
+                </div>
+            </div>
+            <a href="https://t.me/NLG_manager" target="_blank" class="contacts-telegram-btn">MESSAGE US</a>
+        </div>
+    </div>
+
+    <div class="sync-notice" id="syncNotice">✅ Сохранено</div>
+
+    <div id="productCodeModal" class="product-code-modal">
+        <div class="product-code-card">
+            <button class="close-code-btn" id="closeCodeBtn">✕</button>
+            <div class="code-icon">🎫</div>
+            <h2>YOUR CODE</h2>
+            <div class="code-display" id="productCodeDisplay">XXXX-XXXX-XXXX</div>
+            <div class="product-info" id="productInfoDisplay">Товар: 0 ₽</div>
+            <button class="copy-code-btn" id="copyCodeBtn">📋 COPY CODE</button>
+            <div class="code-hint">💡 Send this code to @NLG_manager on Telegram</div>
+        </div>
+    </div>
+
+    <script src="scriptt.js"></script>
+</body>
+</html>
