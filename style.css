@@ -1,0 +1,892 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+
+body {
+    background: #0a0a0a;
+    font-family: 'Inter', Arial, sans-serif;
+    color: #ffffff;
+}
+
+/* ---------- АНИМАЦИИ ---------- */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(255, 107, 107, 0.4); }
+}
+
+/* ---------- ШАПКА (ПРОЗРАЧНАЯ) ---------- */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 50px;
+    background: transparent;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.header.scrolled {
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    padding: 14px 50px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.burger {
+    display: none;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 101;
+}
+.burger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -1px;
+}
+.logo span {
+    color: #ff6b6b;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+.nav-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    transition: 0.3s;
+    position: relative;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff6b6b;
+    transition: 0.3s;
+}
+.nav-links a:hover::after {
+    width: 100%;
+}
+.nav-links a:hover {
+    color: white;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 60px;
+}
+
+/* ---------- БОКОВОЕ МЕНЮ ---------- */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 300px;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    z-index: 200;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+.side-menu.open {
+    left: 0;
+}
+.side-menu a {
+    display: block;
+    padding: 16px 30px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.3s;
+}
+.side-menu a:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: white;
+    padding-left: 38px;
+}
+.menu-text {
+    margin-top: auto;
+    padding: 20px 30px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 150;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---------- ГЕРОЙ БЛОК ---------- */
+.hero-section {
+    margin-top: 0;
+    padding: 140px 50px 80px;
+    background: linear-gradient(180deg, #0a0a0a 0%, #141414 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.hero-section::before {
+    content: 'URBN';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    letter-spacing: 20px;
+    pointer-events: none;
+}
+.hero-section .hero-badge {
+    display: inline-block;
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    color: #ff6b6b;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeInUp 0.8s ease;
+}
+.hero-section h1 {
+    font-size: 4.5rem;
+    font-weight: 900;
+    letter-spacing: -3px;
+    margin-bottom: 16px;
+    animation: fadeInUp 0.8s ease 0.1s both;
+    line-height: 1.1;
+}
+.hero-section h1 span {
+    color: #ff6b6b;
+}
+.hero-section p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 500px;
+    margin: 0 auto 30px;
+    line-height: 1.8;
+    animation: fadeInUp 0.8s ease 0.2s both;
+}
+.hero-section .hero-tags {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease 0.3s both;
+}
+.hero-section .hero-tags span {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.hero-section .hero-tags span strong {
+    color: white;
+}
+
+/* ---------- КАТАЛОГ ---------- */
+.catalog {
+    padding: 60px 50px 80px;
+    background: #0a0a0a;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.section-title .view-all {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.section-title .view-all:hover {
+    color: #ff6b6b;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    animation: fadeInUp 0.6s ease;
+}
+
+.category-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.category-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 107, 107, 0.05);
+    border-color: rgba(255, 107, 107, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.category-card:active {
+    transform: scale(0.97);
+}
+.category-icon {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    display: block;
+}
+.category-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+}
+
+/* ---------- КАРТОЧКА ТОВАРА ---------- */
+.product-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: fadeInScale 0.6s ease;
+}
+.product-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 107, 107, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.product-card .image-wrapper {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+.product-card .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.product-card:hover .image-wrapper img {
+    transform: scale(1.08);
+}
+.product-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 10px 0 4px;
+    color: white;
+}
+.product-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ff6b6b;
+    margin-bottom: 14px;
+}
+.view-code-btn {
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+    width: 100%;
+    font-size: 0.85rem;
+}
+.view-code-btn:hover {
+    background: #ff6b6b;
+    border-color: #ff6b6b;
+    transform: scale(1.02);
+}
+.view-code-btn:active {
+    transform: scale(0.97);
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.2rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+.back-btn:hover {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: #ff6b6b;
+    transform: rotate(-90deg);
+}
+
+/* ---------- ИНСТРУКЦИЯ ---------- */
+.order-steps {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 24px;
+    margin: 0 50px 50px;
+    padding: 50px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.steps-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    text-align: center;
+    margin-bottom: 35px;
+    letter-spacing: -1px;
+}
+.steps-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+.step-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 24px 20px;
+    flex: 1;
+    min-width: 160px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.step-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 107, 107, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}
+.step-number {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 107, 107, 0.15);
+    color: #ff6b6b;
+    font-size: 1.4rem;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    transition: 0.3s;
+}
+.step-card:hover .step-number {
+    background: #ff6b6b;
+    color: white;
+    transform: scale(1.1);
+}
+.step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+.step-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+}
+.bot-contact {
+    margin-top: 30px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 16px 24px;
+    border-radius: 60px;
+    display: inline-block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.bot-contact span {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+.bot-contact a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 600;
+}
+.bot-contact a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- ПОДВАЛ ---------- */
+footer {
+    background: #0a0a0a;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 50px 50px 20px;
+}
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.footer-col h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: white;
+    letter-spacing: 1px;
+}
+.footer-col h4 span {
+    color: #ff6b6b;
+}
+.footer-col p {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    line-height: 1.8;
+    max-width: 280px;
+}
+.footer-col a {
+    display: block;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    font-size: 0.8rem;
+    padding: 4px 0;
+    transition: 0.3s;
+}
+.footer-col a:hover {
+    color: #ff6b6b;
+    padding-left: 4px;
+}
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+/* ---------- МОДАЛКА КОНТАКТОВ ---------- */
+.contacts-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+.contacts-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+.contacts-card {
+    background: #141414;
+    width: 90%;
+    max-width: 440px;
+    border-radius: 24px;
+    padding: 35px 30px 30px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.contacts-modal.active .contacts-card {
+    transform: scale(1);
+}
+.contacts-card h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+.close-contacts {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.3);
+    transition: 0.3s;
+}
+.close-contacts:hover {
+    color: #ff6b6b;
+    transform: rotate(90deg);
+}
+.contact-detail {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.contact-icon {
+    font-size: 24px;
+}
+.contact-info {
+    text-align: left;
+    flex: 1;
+}
+.contact-label {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.contact-value {
+    color: white;
+    font-weight: 600;
+}
+.contacts-telegram-btn {
+    display: inline-block;
+    margin-top: 18px;
+    background: #ff6b6b;
+    color: #0a0a0a;
+    padding: 14px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+}
+.contacts-telegram-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.3);
+}
+
+/* ---------- МОДАЛКА КОДА ---------- */
+.product-code-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(16px);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+.product-code-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+.product-code-card {
+    background: #141414;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 24px;
+    padding: 35px 30px 30px;
+    text-align: center;
+    transform: scale(0.9) rotate(-2deg);
+    transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.product-code-modal.active .product-code-card {
+    transform: scale(1) rotate(0deg);
+}
+.close-code-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.3);
+    transition: 0.3s;
+}
+.close-code-btn:hover {
+    color: #ff6b6b;
+    transform: rotate(90deg);
+}
+.code-icon {
+    font-size: 3.5rem;
+    margin-bottom: 8px;
+}
+.product-code-card h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+}
+.code-display {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Courier New', monospace;
+    color: #ff6b6b;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 14px;
+    letter-spacing: 4px;
+    margin: 12px 0;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+}
+.product-info {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+}
+.copy-code-btn {
+    background: #ff6b6b;
+    color: #0a0a0a;
+    border: none;
+    font-weight: 700;
+    padding: 14px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.85rem;
+    width: 100%;
+    letter-spacing: 1px;
+}
+.copy-code-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.3);
+}
+.copy-code-btn:active {
+    transform: scale(0.97);
+}
+.code-hint {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.75rem;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- УВЕДОМЛЕНИЕ ---------- */
+.sync-notice {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(255, 107, 107, 0.9);
+    color: #0a0a0a;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.3);
+}
+.sync-notice.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- АДАПТИВ ---------- */
+@media (max-width: 992px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    .hero-section h1 {
+        font-size: 3.5rem;
+    }
+    .hero-section::before {
+        font-size: 10rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 16px 20px;
+    }
+    .header.scrolled {
+        padding: 12px 20px;
+    }
+    .burger {
+        display: flex;
+    }
+    .nav-links {
+        display: none;
+    }
+    .logo {
+        font-size: 1.5rem;
+    }
+    .hero-section {
+        padding: 120px 20px 60px;
+        min-height: 70vh;
+    }
+    .hero-section h1 {
+        font-size: 2.5rem;
+        letter-spacing: -2px;
+    }
+    .hero-section::before {
+        font-size: 6rem;
+        letter-spacing: 10px;
+    }
+    .hero-section .hero-tags {
+        gap: 16px;
+    }
+    .catalog {
+        padding: 40px 16px 60px;
+    }
+    .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 14px;
+    }
+    .order-steps {
+        margin: 0 16px 30px;
+        padding: 30px 16px;
+    }
+    .steps-title {
+        font-size: 1.4rem;
+    }
+    .step-card {
+        min-width: 130px;
+        padding: 18px 14px;
+    }
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        text-align: center;
+    }
+    .footer-col p {
+        max-width: 100%;
+    }
+    footer {
+        padding: 30px 20px 16px;
+    }
+    .section-title {
+        font-size: 1.4rem;
+    }
+    .product-code-card {
+        padding: 25px 20px;
+    }
+    .code-display {
+        font-size: 1.4rem;
+        padding: 14px;
+        letter-spacing: 2px;
+    }
+    .contacts-card {
+        padding: 28px 20px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .category-card {
+        padding: 20px 12px;
+    }
+    .category-icon {
+        font-size: 2rem;
+    }
+    .product-card {
+        padding: 14px;
+    }
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+    .hero-section p {
+        font-size: 0.9rem;
+    }
+}
