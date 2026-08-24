@@ -25,7 +25,8 @@ let productsData = {
     { name: "Кросовки J.S.", price: 4500, img: "images/A1.jpg", code: "NLG-WQA4-POP"},
     { name: "Тапатули маквин", price: 1000, img: "images/A18.jpg", code: "NLG-BEBE-XYI"},
     { name: "Кросовки Black Nike", price: 3000, img: "images/A21.jpg", code: "NLG-BEBE-JYI"},
-    { name: "Кросовки Black", price: 2000, img: "images/A26.jpg", code: "NLG-FGRT-50O"
+    { name: "Кросовки Black", price: 2000, img: "images/A26.jpg", code: "NLG-FGRT-50O"}
+   ],
     "Аксессуары": [
     { name: "Подвестка Молния", price: 250, img: "images/A20.jpg", code: "NLG-AC01-BEANIE" },
     { name: "Подвестка Паук", price: 250, img: "images/A9.jpg", code: "NLG-GDRY-JF38R"},
