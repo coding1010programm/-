@@ -1,14 +1,44 @@
 // ---------- ТОВАРЫ С ПОСТОЯННЫМИ КОДАМИ ----------
 let productsData = {
     "Футболки": [
-        { name: "Футболка Nike Black", price: 1990, img: "", code: "NLG-FK01-BLACK" },
-        { name: "Футболка Adidas White", price: 1890, img: "https://picsum.photos/id/104/200", code: "NLG-FK02-WHITE" }
+    { name: "Футболка Black муж-жен", price: 1500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/1b3ba6168da9c1e0b4e7cfc3dde484bb.jpg", code: "NLG-FK01-BLACK" },
+    { name: "Футболка США муж", price: 2500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/b05b856a78ff6f86780668616477d5d8.jpg", code: "NLG-FK02-WHITE" },
+    { name: "Футболка Роза жен", price: 3000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/64a232cd82735ef0afa65199b827b452.jpg", code: "NLG-FG02-WHITE" }
     ],
-    "Лонгсливы": [{ name: "Лонгслив Nike Gray", price: 2290, img: "https://picsum.photos/id/20/200", code: "NLG-LS01-GRAY" }],
-    "Худи": [{ name: "Худи Nike", price: 3990, img: "https://picsum.photos/id/32/200", code: "NLG-HD01-BLACK" }],
-    "Обувь": [{ name: "Кроссовки Nike Air", price: 4990, img: "https://picsum.photos/id/43/200", code: "NLG-SH01-AIR" }],
-    "Аксессуары": [{ name: "Шапка Beanie", price: 990, img: "https://picsum.photos/id/46/200", code: "NLG-AC01-BEANIE" }],
-    "Джинцы": [{ name: "Клёш", price: 2200, img: "https://picsum.photos/id/46/200", code: "NLG-SW01-COZY" }],
+    "Лонгсливы": [
+    { name: "Лонгслив Cat Black", price: 2290, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/5c201906506a7fd985b461c9c2345f42.jpg", code: "NLG-JS01-GRAY" },
+    { name: "Лонгслив Fortunate", price: 3000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/7f17db9c790d9efd132ae0a8776f12a3.jpg", code: "NLG-LS01-GKAY" },
+    { name: "Лонгслив Black", price: 1500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/783a08aaad69edd812c079bb241c0256.jpg", code: "NLG-LSH1-GRAY" },
+    { name: "Лонгслив G.L.Y.D.E ", price: 3500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/a4be4f497ee22f37d2f0597c9838966a.jpg", code: "NLG-LS09-GRAY" },
+    { name: "Лонгслив NEW YORK", price: 2000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/df1fabd86f9a8a84a8e367dee47ca9b0.jpg", code: "NLG-LF01-GRAY" },
+    { name: "Лонгслив Black - White", price: 2500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/a6e6bf9b91d6a11743cbcebb728b4554.jpg", code: "NLG-LS01-BLAY" }
+    ],
+    "Худи": [
+    { name: "Худи Cat муж-жен", price: 3500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/d477595add838a028737df3c6265d34a.jpg", code: "NLG-HD01-BLACK" },
+    { name: "Худи аниме жен", price: 6500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/91888b03674de0e77d4e3d122bca4c2a.jpg", code: "NLG-HG01-BLACK" },
+    { name: "Худи муж", price: 2500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/1200ed76ad0e2816091f86703de23f2a.jpg", code: "NLG-HF01-BLACK" },
+    { name: "Худи жен  ", price: 5350, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/cd9f2349fc1608c9fba1b8e4309597b2.jpg", code: "NLG-HI01-BLACK" }
+    ],
+    "Обувь": [
+    { name: "Кроссовки white", price: 4990, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/26a30b99c5a1c847391f29b609ec1295.jpg", code: "NLG-SH01-AIR" },
+    { name: "Кросовки Z", price: 3500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/20a405fed4b50bde5441c40508a86692.jpg", code: "NLG-TYUI-78R"},         
+    { name: "Кросовки J.S.", price: 4500, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/4e40d4a829d06a9cda2deaa13607ee4e.jpg", code: "NLG-WQA4-POP"},
+    { name: "Тапатули маквин", price: 1000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/b78bc8590699b4f659fed99d42c8a5db.jpg", code: "NLG-BEBE-XYI"},
+    { name: "Кросовки Black Nike", price: 3000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/ca27816b2f2251a365352a43421c5c06.jpg", code: "NLG-BEBE-JYI"},
+    { name: "Кросовки Black", price: 2000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/e484957945bcb8c8daa7db6372ebae3d.jpg", code: "NLG-BEBE-UYI"},
+    ],
+    "Аксессуары": [
+    { name: "Подвестка Молния", price: 250, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/c2ca6034bb8524a1b1c7c96684f01638.jpg", code: "NLG-AC01-BEANIE" },
+    { name: "Подвестка Паук", price: 250, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/50cbbfd90b81e3f0fba29edca9b79454.jpg", code: "NLG-GDRY-JF38R"},
+    { name: "Подвестка Наушники", price: 250, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/030dee68c5511dd58ebab258de472737.jpg", code: "NLG-SWYO-KSYVN"},
+    { name: "Подвестка Карта", price: 250, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/9ff1bed34735c210dc07b99b4b415c85.jpg", code: "NLG-FPOK-WTXV8"},
+    { name: "Подвестка Король Череп", price: 250, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/6aa810e445613c299eb9c3f32d11b2a5.jpg", code: "NLG-RYDF-QVHUT"},
+    { name: "Подвестка Змея", price: 250, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/2ec26474cedb8d285caa0b971c61f8e6.jpg", code: "NLG-DGUR-RJSNW"}
+    ],
+    "Джинцы": [
+    { name: "Клёш, жен", price: 2200, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/6034b3033e82308f47ff4d8f49f4aa64.jpg", code: "NLG-SW01-COZY" },
+    { name: "Клёш, муж", price: 2000, img: "/storage/emulated/0/Сайт одежды для GitHab/Картинки/3c1d790e4496f7d76dc6168024278ef5.jpg",code: "NLG-ZET9-COZY"}
+    ]
 };
 
 // ---------- ПОКАЗ КОДА (БЕРЁМ ИЗ ДАННЫХ) ----------
