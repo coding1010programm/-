@@ -1,43 +1,43 @@
 // ---------- ТОВАРЫ С ПОСТОЯННЫМИ КОДАМИ ----------
 let productsData = {
     "Футболки": [
-    { name: "Футболка Black муж-жен", price: 1500, img: "images/A19.jpg", code: "NLG-FK01-BLACK" },
-    { name: "Футболка США муж", price: 2500, img: "images/A17.jpg", code: "NLG-FK02-WHITE" },
-    { name: "Футболка Роза жен", price: 3000, img: "images/A10.jpg", code: "NLG-FG02-WHITE" }
+    { name: "Футболка Black муж-жен", price: 1500, img: "Images/A19.jpg", code: "NLG-FK01-BLACK" },
+    { name: "Футболка США муж", price: 2500, img: "Images/A17.jpg", code: "NLG-FK02-WHITE" },
+    { name: "Футболка Роза жен", price: 3000, img: "Images/A10.jpg", code: "NLG-FG02-WHITE" }
     ],
     "Лонгсливы": [
-    { name: "Лонгслив Cat Black", price: 2290, img: "images/A2.jpg", code: "NLG-JS01-GRAY" },
-    { name: "Лонгслив Fortunate", price: 3000, img: "images/A4.jpg", code: "NLG-LS01-GKAY" },
-    { name: "Лонгслив Black", price: 1500, img: "images/A11.jpg", code: "NLG-LSH1-GRAY" },
-    { name: "Лонгслив G.L.Y.D.E ", price: 3500, img: "images/A15.jpg", code: "NLG-LS09-GRAY" },
-    { name: "Лонгслив NEW YORK", price: 2000, img: "images/A24.jpg", code: "NLG-LF01-GRAY" },
-    { name: "Лонгслив Black - White", price: 2500, img: "images/A16x.jpg", code: "NLG-LS01-BLAY" }
+    { name: "Лонгслив Cat Black", price: 2290, img: "Images/A2.jpg", code: "NLG-JS01-GRAY" },
+    { name: "Лонгслив Fortunate", price: 3000, img: "Images/A4.jpg", code: "NLG-LS01-GKAY" },
+    { name: "Лонгслив Black", price: 1500, img: "Images/A11.jpg", code: "NLG-LSH1-GRAY" },
+    { name: "Лонгслив G.L.Y.D.E ", price: 3500, img: "Images/A15.jpg", code: "NLG-LS09-GRAY" },
+    { name: "Лонгслив NEW YORK", price: 2000, img: "Images/A24.jpg", code: "NLG-LF01-GRAY" },
+    { name: "Лонгслив Black - White", price: 2500, img: "Images/A16x.jpg", code: "NLG-LS01-BLAY" }
     ],
     "Худи": [
-    { name: "Худи Cat муж-жен", price: 3500, img: "images/A23.jpg", code: "NLG-HD01-BLACK" },
-    { name: "Худи аниме жен", price: 6500, img: "images/A14.jpg", code: "NLG-HG01-BLACK" },
-    { name: "Худи муж", price: 2500, img: "images/A12.jpg", code: "NLG-HF01-BLACK" },
-    { name: "Худи жен  ", price: 5350, img: "images/A22.jpg", code: "NLG-HI01-BLACK" }
+    { name: "Худи Cat муж-жен", price: 3500, img: "Images/A23.jpg", code: "NLG-HD01-BLACK" },
+    { name: "Худи аниме жен", price: 6500, img: "Images/A14.jpg", code: "NLG-HG01-BLACK" },
+    { name: "Худи муж", price: 2500, img: "Images/A12.jpg", code: "NLG-HF01-BLACK" },
+    { name: "Худи жен  ", price: 5350, img: "Images/A22.jpg", code: "NLG-HI01-BLACK" }
     ],
     "Обувь": [
-    { name: "Кроссовки white", price: 4000, img: "images/A7.jpg", code: "NLG-SH01-AIR" },
-    { name: "Кросовки Z", price: 3500, img: "images/A6.jpg", code: "NLG-TYUI-78R"},         
-    { name: "Кросовки J.S.", price: 4500, img: "images/A1.jpg", code: "NLG-WQA4-POP"},
-    { name: "Тапатули маквин", price: 1000, img: "images/A18.jpg", code: "NLG-BEBE-XYI"},
-    { name: "Кросовки Black Nike", price: 3000, img: "images/A21.jpg", code: "NLG-BEBE-JYI"},
-    { name: "Кросовки Black", price: 2000, img: "images/A26.jpg", code: "NLG-FGRT-50O"}
+    { name: "Кроссовки white", price: 4000, img: "Images/A7.jpg", code: "NLG-SH01-AIR" },
+    { name: "Кросовки Z", price: 3500, img: "Images/A6.jpg", code: "NLG-TYUI-78R"},         
+    { name: "Кросовки J.S.", price: 4500, img: "Images/A1.jpg", code: "NLG-WQA4-POP"},
+    { name: "Тапатули маквин", price: 1000, img: "Images/A18.jpg", code: "NLG-BEBE-XYI"},
+    { name: "Кросовки Black Nike", price: 3000, img: "Images/A21.jpg", code: "NLG-BEBE-JYI"},
+    { name: "Кросовки Black", price: 2000, img: "Images/A26.jpg", code: "NLG-FGRT-50O"}
    ],
     "Аксессуары": [
-    { name: "Подвестка Молния", price: 250, img: "images/A20.jpg", code: "NLG-AC01-BEANIE" },
-    { name: "Подвестка Паук", price: 250, img: "images/A9.jpg", code: "NLG-GDRY-JF38R"},
-    { name: "Подвестка Наушники", price: 250, img: "images/A8.jpg", code: "NLG-SWYO-KSYVN"},
-    { name: "Подвестка Карта", price: 250, img: "images/A5.jpg", code: "NLG-FPOK-WTXV8"},
-    { name: "Подвестка Король Череп", price: 250, img: "images/A3.jpg", code: "NLG-RYDF-QVHUT"},
-    { name: "Подвестка Змея", price: 250, img: "images/A27.jpg", code: "NLG-DGUR-RJSNW"}
+    { name: "Подвестка Молния", price: 250, img: "Images/A20.jpg", code: "NLG-AC01-BEANIE" },
+    { name: "Подвестка Паук", price: 250, img: "Images/A9.jpg", code: "NLG-GDRY-JF38R"},
+    { name: "Подвестка Наушники", price: 250, img: "Images/A8.jpg", code: "NLG-SWYO-KSYVN"},
+    { name: "Подвестка Карта", price: 250, img: "Images/A5.jpg", code: "NLG-FPOK-WTXV8"},
+    { name: "Подвестка Король Череп", price: 250, img: "Images/A3.jpg", code: "NLG-RYDF-QVHUT"},
+    { name: "Подвестка Змея", price: 250, img: "Images/A27.jpg", code: "NLG-DGUR-RJSNW"}
     ],
     "Джинцы": [
-    { name: "Клёш, жен", price: 2200, img: "images/A13.jpg", code: "NLG-SW01-COZY" },
-    { name: "Клёш, муж", price: 2000, img: "images/A25.jpg",code: "NLG-ZET9-COZY"}
+    { name: "Клёш, жен", price: 2200, img: "Images/A13.jpg", code: "NLG-SW01-COZY" },
+    { name: "Клёш, муж", price: 2000, img: "Images/A25.jpg",code: "NLG-ZET9-COZY"}
     ]
 };
 
