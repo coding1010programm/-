@@ -11,7 +11,7 @@ let productsData = {
     { name: "Лонгслив Black", price: 1500, img: "Images/A11.jpg", code: "NLG-LSH1-GRAY" },
     { name: "Лонгслив G.L.Y.D.E ", price: 3500, img: "Images/A15.jpg", code: "NLG-LS09-GRAY" },
     { name: "Лонгслив NEW YORK", price: 2000, img: "Images/A24.jpg", code: "NLG-LF01-GRAY" },
-    { name: "Лонгслив Black - White", price: 2500, img: "Images/A16x.jpg", code: "NLG-LS01-BLAY" }
+    { name: "Лонгслив Black - White", price: 2500, img: "Images/A16.jpg", code: "NLG-LS01-BLAY" }
     ],
     "Худи": [
     { name: "Худи Cat муж-жен", price: 3500, img: "Images/A23.jpg", code: "NLG-HD01-BLACK" },
